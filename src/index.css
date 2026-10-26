@@ -1,0 +1,95 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+/*
+ * Tokens de design. Os valores abaixo são PLACEHOLDERS até a extração
+ * dos tokens reais do Figma (cores, tipografia, espaçamentos).
+ */
+:root {
+  --background: oklch(0.2 0.03 290);
+  --foreground: oklch(0.98 0 0);
+  --card: oklch(0.25 0.04 290);
+  --primary: oklch(0.62 0.2 290);
+  --primary-foreground: oklch(0.99 0 0);
+  --muted: oklch(0.3 0.03 290);
+  --muted-foreground: oklch(0.78 0.02 290);
+  --destructive: oklch(0.65 0.22 25);
+  --ring: oklch(0.8 0.15 290);
+  --radius: 0.75rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
+  --font-sans: 'Work Sans', system-ui, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-muted;
+  }
+  html {
+    overflow-x: clip;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* Skeleton com shimmer; respeita prefers-reduced-motion. */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--muted);
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    oklch(1 0 0 / 0.12),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.sr-only-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

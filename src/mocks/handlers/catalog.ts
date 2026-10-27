@@ -3,7 +3,7 @@ import type { FeaturedResponse, Nft, NftFacets, NftSort, NftTab, Page } from '@/
 import { getDb, getScenario } from '../db/store'
 import { CATALOG_NOW, CATEGORIES, NETWORKS } from '../db/seed'
 import { findNft } from '../domain/commerce'
-import { fail, route } from './http'
+import { fail, requireAuth, route } from './http'
 
 const NEW_WINDOW_MS = 30 * 86_400_000
 const SORTS: NftSort[] = ['recent', 'price-asc', 'price-desc', 'name']
@@ -27,7 +27,7 @@ function catalog(): Nft[] {
 }
 
 export const catalogHandlers = [
-  route('get', '/nfts', ({ url }) => {
+  route('get', '/nfts', ({ url, request }) => {
     const p = url.searchParams
     const q = p.get('q')?.trim().toLowerCase() ?? ''
     const categories = p.getAll('category')
@@ -43,7 +43,10 @@ export const catalogHandlers = [
       throw fail(400, 'VALIDATION_ERROR', 'Paginação inválida.')
     }
 
+    const favorites = p.get('favorites') === 'true' ? new Set(getDb().favorites[requireAuth(request).user.id] ?? []) : null
+
     let items = catalog().filter((n) => {
+      if (favorites && !favorites.has(n.id)) return false
       if (q && !`${n.title} ${n.creator} ${n.collection}`.toLowerCase().includes(q)) return false
       if (categories.length && !categories.includes(n.category)) return false
       if (networks.length && !networks.includes(n.network)) return false

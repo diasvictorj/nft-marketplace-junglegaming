@@ -66,7 +66,7 @@ export const authHandlers = [
   route('post', '/auth/signup', async ({ request }) => {
     const body = await readJson<SignupRequest>(request)
     const errors: Record<string, string> = {}
-    if (!body.name || body.name.trim().length < 2) errors.name = 'Informe seu nome (mín. 2 caracteres)'
+    if (body.name !== undefined && body.name.trim().length < 2) errors.name = 'Informe seu nome (mín. 2 caracteres)'
     if (!body.username || !USERNAME_RE.test(body.username)) errors.username = 'Use 3–20 letras, números, "_" ou "."'
     if (!body.email || !EMAIL_RE.test(body.email)) errors.email = 'Informe um e-mail válido'
     const pwd = passwordIssues(body.password)
@@ -88,7 +88,7 @@ export const authHandlers = [
     const user = mutate((d) => {
       const u: DbUser = {
         id: `u${++d.seq.user}`,
-        name: body.name.trim(),
+        name: body.name?.trim() || body.username.trim(),
         username: body.username.trim(),
         email,
         bio: '',

@@ -58,8 +58,9 @@ export interface LoginRequest {
   password: string
 }
 export interface SignupRequest extends LoginRequest {
-  name: string
   username: string
+  /** Opcional; quando ausente, o nome de exibição inicial é o nome de usuário. */
+  name?: string
 }
 
 /* ---------- NFTs ---------- */
@@ -75,6 +76,8 @@ export interface NftListParams {
   maxPrice?: EthString
   sort: NftSort
   tab: NftTab
+  /** Somente favoritos do usuário autenticado. */
+  favorites?: boolean
   page: number
   pageSize: number
 }

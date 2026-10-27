@@ -55,7 +55,10 @@ export const accountHandlers = [
     if (!body.name || body.name.trim().length < 2 || body.name.length > 60) errors.name = 'Use entre 2 e 60 caracteres'
     if (!body.username || !USERNAME_RE.test(body.username)) errors.username = 'Use 3–20 letras, números, "_" ou "."'
     if (!body.email || !EMAIL_RE.test(body.email)) errors.email = 'Informe um e-mail válido'
-    if ((body.bio ?? '').length > 280) errors.bio = 'Máximo de 280 caracteres'
+    if (body.ensName && !/^[a-z0-9-]{3,32}$/i.test(body.ensName)) errors.ensName = 'Use 3–32 letras, números ou hífen'
+    if (!body.walletNickname || body.walletNickname.trim().length < 2 || body.walletNickname.length > 40) {
+      errors.walletNickname = 'Use entre 2 e 40 caracteres'
+    }
     if (Object.keys(errors).length) throw validation(errors)
     const db = getDb()
     const email = body.email.trim().toLowerCase()
@@ -69,7 +72,8 @@ export const accountHandlers = [
       user.name = body.name.trim()
       user.username = body.username.trim()
       user.email = email
-      user.bio = (body.bio ?? '').trim()
+      user.ensName = (body.ensName ?? '').trim()
+      user.walletNickname = body.walletNickname.trim()
       return toUser(user)
     })
   }),

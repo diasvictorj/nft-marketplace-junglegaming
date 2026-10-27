@@ -7,7 +7,7 @@ import type { Db } from './types'
  * localStorage para sobreviver a refresh. `resetDb` restaura o seed conhecido.
  */
 const DB_KEY = 'mock:db:v1'
-const SCHEMA = 1
+const SCHEMA = 2
 
 let db: Db | null = null
 let scenario: ScenarioConfig = scenarios.success

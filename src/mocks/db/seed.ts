@@ -156,7 +156,8 @@ async function seedUsers(): Promise<DbUser[]> {
         name: u.name,
         username: u.username,
         email: u.email,
-        bio: i === 0 ? 'Coleciono arte digital desde 2021.' : '',
+        ensName: i === 0 ? 'ana-coleciona' : '',
+        walletNickname: i === 0 ? 'Cofre da Ana' : 'Carteira do Bruno',
         avatarUrl: null,
         salt,
         passwordHash: await hashPassword(u.demoPassword, salt),
@@ -175,7 +176,7 @@ function seedWallets(): DbWallet[] {
 
 export async function createSeed(): Promise<Db> {
   return {
-    schema: 1,
+    schema: 2,
     users: await seedUsers(),
     sessions: [],
     nfts: seedNfts(),

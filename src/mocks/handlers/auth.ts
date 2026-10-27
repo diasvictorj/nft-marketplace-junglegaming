@@ -9,7 +9,7 @@ export const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 export const USERNAME_RE = /^[a-z0-9_.]{3,20}$/i
 
 export function toUser(u: DbUser): User {
-  return { id: u.id, name: u.name, username: u.username, email: u.email, bio: u.bio, avatarUrl: u.avatarUrl }
+  return { id: u.id, name: u.name, username: u.username, email: u.email, ensName: u.ensName, walletNickname: u.walletNickname, avatarUrl: u.avatarUrl }
 }
 
 export function passwordIssues(password: string): string | null {
@@ -91,7 +91,8 @@ export const authHandlers = [
         name: body.name?.trim() || body.username.trim(),
         username: body.username.trim(),
         email,
-        bio: '',
+        ensName: '',
+        walletNickname: '',
         avatarUrl: null,
         salt,
         passwordHash,

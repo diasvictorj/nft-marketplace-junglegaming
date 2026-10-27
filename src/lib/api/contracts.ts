@@ -42,7 +42,10 @@ export interface User {
   name: string
   username: string
   email: string
-  bio: string
+  /** Nome ENS sem o sufixo .eth (vazio = não definido). */
+  ensName: string
+  /** Apelido exibido para a carteira do colecionador. */
+  walletNickname: string
   avatarUrl: string | null
 }
 export interface SessionResponse {
@@ -251,7 +254,8 @@ export interface UpdateProfileRequest {
   name: string
   username: string
   email: string
-  bio: string
+  ensName: string
+  walletNickname: string
 }
 export interface UpdateAvatarRequest {
   /** data URL (image/png|jpeg|webp), até ~300 KB. */

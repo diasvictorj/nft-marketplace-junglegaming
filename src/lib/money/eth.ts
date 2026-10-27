@@ -13,9 +13,9 @@ export const ethMul = (a: EthString, qty: number): EthString => {
 }
 export const ethEquals = (a: EthString, b: EthString) => eth(a).eq(eth(b))
 
-/** Apresentação: até 4 casas, sem zeros à direita desnecessários. */
+/** Apresentação: até 6 casas (sem perder os valores da cotação), sem zeros à direita. */
 export function formatEth(value: EthString): string {
   const d = eth(value)
-  const fixed = d.toDecimalPlaces(4, Decimal.ROUND_HALF_UP).toFixed(4)
+  const fixed = d.toDecimalPlaces(6, Decimal.ROUND_HALF_UP).toFixed(6)
   return `${fixed.replace(/\.?0+$/, '') || '0'} ETH`
 }

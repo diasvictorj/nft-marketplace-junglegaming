@@ -27,7 +27,13 @@ export function RealtimeBridge() {
   ownerRef.current = ownerId
 
   useEffect(() => {
-    const socket = connectSocket(token)
+    // Adia a conexão um tick: no double-mount do StrictMode o primeiro efeito é
+    // descartado antes de abrir um socket que ficaria órfão no servidor simulado.
+    let socket: ReturnType<typeof connectSocket> | null = null
+    const timer = setTimeout(() => {
+      socket = connectSocket(token)
+      wire(socket)
+    }, 0)
     const seen = new Set<string>()
     const versions = new Map<string, number>()
     let connectedOnce = false
@@ -43,38 +49,41 @@ export function RealtimeBridge() {
       return true
     }
 
-    socket.on('connect', () => {
-      setRealtimeStatus('connected')
-      if (connectedOnce) reconcile(queryClient, userId)
-      connectedOnce = true
-    })
-    socket.on('disconnect', () => setRealtimeStatus('reconnecting'))
+    const wire = (socket: ReturnType<typeof connectSocket>) => {
+      socket.on('connect', () => {
+        setRealtimeStatus('connected')
+        if (connectedOnce) reconcile(queryClient, userId)
+        connectedOnce = true
+      })
+      socket.on('disconnect', () => setRealtimeStatus('reconnecting'))
 
-    socket.on('nft.updated', (event: NftUpdatedEvent) => {
-      if (event.sessionId !== null && event.sessionId !== sessionId) return
-      const nft = event.payload.nft
-      const cached = queryClient.getQueryData<Nft>(qk.nfts.detail(nft.id))
-      if (!isNew(event.eventId, `nft:${nft.id}`, event.version, cached?.version)) return
-      applyNftUpdate(queryClient, nft, ownerRef.current)
-    })
+      socket.on('nft.updated', (event: NftUpdatedEvent) => {
+        if (event.sessionId !== null && event.sessionId !== sessionId) return
+        const nft = event.payload.nft
+        const cached = queryClient.getQueryData<Nft>(qk.nfts.detail(nft.id))
+        if (!isNew(event.eventId, `nft:${nft.id}`, event.version, cached?.version)) return
+        applyNftUpdate(queryClient, nft, ownerRef.current)
+      })
 
-    socket.on('order.updated', (event: OrderUpdatedEvent) => {
-      // Eventos privados só valem para a sessão que os recebeu.
-      if (!userId || event.sessionId !== sessionId) return
-      const order = event.payload.order
-      const key = qk.orders.detail(userId, order.id)
-      const cached = queryClient.getQueryData<Order>(key)
-      if (!isNew(event.eventId, `order:${order.id}`, event.version, cached?.version)) return
-      queryClient.setQueryData(key, order)
-      void queryClient.invalidateQueries({ queryKey: qk.orders.pending(userId) })
-      if (order.status === 'confirmed') {
-        void queryClient.invalidateQueries({ queryKey: qk.cart(userId) })
-        void queryClient.invalidateQueries({ queryKey: qk.quotes(userId) })
-      }
-    })
+      socket.on('order.updated', (event: OrderUpdatedEvent) => {
+        // Eventos privados só valem para a sessão que os recebeu.
+        if (!userId || event.sessionId !== sessionId) return
+        const order = event.payload.order
+        const key = qk.orders.detail(userId, order.id)
+        const cached = queryClient.getQueryData<Order>(key)
+        if (!isNew(event.eventId, `order:${order.id}`, event.version, cached?.version)) return
+        queryClient.setQueryData(key, order)
+        void queryClient.invalidateQueries({ queryKey: qk.orders.pending(userId) })
+        if (order.status === 'confirmed') {
+          void queryClient.invalidateQueries({ queryKey: qk.cart(userId) })
+          void queryClient.invalidateQueries({ queryKey: qk.quotes(userId) })
+        }
+      })
+    }
 
     return () => {
-      disconnectSocket()
+      clearTimeout(timer)
+      if (socket) disconnectSocket()
       setRealtimeStatus('idle')
     }
   }, [queryClient, token, sessionId, userId])
@@ -84,11 +93,13 @@ export function RealtimeBridge() {
 
 function applyNftUpdate(queryClient: QueryClient, nft: Nft, ownerId: string) {
   queryClient.setQueryData<Nft>(qk.nfts.detail(nft.id), (prev) => (!prev || prev.version < nft.version ? nft : prev))
-  queryClient.setQueriesData<Page<Nft>>({ queryKey: qk.nfts.lists() }, (page) =>
-    page && {
-      ...page,
-      items: page.items.map((n) => (n.id === nft.id && n.version < nft.version ? nft : n)),
-    },
+  queryClient.setQueriesData<Page<Nft>>(
+    { queryKey: qk.nfts.lists() },
+    (page) =>
+      page && {
+        ...page,
+        items: page.items.map((n) => (n.id === nft.id && n.version < nft.version ? nft : n)),
+      },
   )
   void queryClient.invalidateQueries({ queryKey: qk.nfts.featured() })
 

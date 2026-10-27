@@ -1,0 +1,23 @@
+import { chromium } from '@playwright/test'
+const browser = await chromium.launch()
+for (const [w, name] of [[1440, 'cart-d'], [390, 'cart-m']]) {
+const page = await browser.newPage({ viewport: { width: w, height: 900 } })
+page.on('pageerror', (e) => console.log('[pageerror]', e.message))
+await page.goto('http://localhost:5173/nfts/nft-001?scenario=success')
+await page.getByRole('button', { name: 'Aumentar quantidade' }).click()
+await page.getByRole('button', { name: 'COMPRAR' }).click()
+await page.waitForURL('**/cart')
+await page.goto('http://localhost:5173/nfts/nft-003')
+await page.getByRole('button', { name: 'COMPRAR' }).click()
+await page.waitForURL('**/cart')
+await page.getByLabel('Código promocional').fill('kurio10')
+await page.getByRole('button', { name: 'Aplicar' }).click()
+await page.getByText('Cupom KURIO10 aplicado').waitFor()
+await page.evaluate(() => window.__mock.updateEdition('nft-001', 'nft-001-e50', { price: '1.5' }))
+await page.waitForTimeout(1500); console.log('conns', await page.evaluate(() => window.__mock.socketConnections())); await page.screenshot({ path: '$S/dbg.png', fullPage: true }); await page.getByText('Preços atualizados').waitFor({ timeout: 3000 })
+await page.waitForTimeout(800)
+console.log(name, await page.locator('dl').innerText())
+await page.screenshot({ path: '/private/tmp/claude-501/-Users-joaovictordasilvadias-Desktop-Desenvolvimento-Desafios-tecnicos-Jungle-Gaming-Resources-nft-marketplace/a5cebf7e-d6ba-49c7-8e45-7321cc4ce389/scratchpad/' + name + '.png', fullPage: w === 1440 ? false : true })
+await page.close()
+}
+await browser.close()

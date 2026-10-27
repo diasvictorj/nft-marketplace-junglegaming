@@ -7,6 +7,7 @@ function Toaster(props: ToasterProps) {
       theme="dark"
       position="bottom-right"
       closeButton
+      mobileOffset={{ bottom: 88 }}
       toastOptions={{
         classNames: {
           toast: '!bg-card !text-card-foreground !border-border-soft !font-sans',

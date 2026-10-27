@@ -49,13 +49,18 @@ test.describe('11. Teclado, foco de diálogos e validação', () => {
     await expect(page).toHaveURL(/\/$/)
   })
 
-  test('não há overflow horizontal na página inicial e no detalhe', async ({ page }) => {
-    for (const path of ['/', `/nfts/${nfts.emerald.id}`, '/cart']) {
-      await page.goto(path)
-      await page.waitForLoadState('networkidle')
-      // Compara com a largura configurada: no mobile, conteúdo largo amplia o viewport de layout.
-      const width = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, window.innerWidth))
-      expect(width, path).toBeLessThanOrEqual(page.viewportSize()!.width)
-    }
+  test('não há overflow horizontal no início, detalhe e carrinho (viewport do projeto e tablet 768)', async ({ page }) => {
+    const checks = ['/', `/nfts/${nfts.emerald.id}`, '/cart']
+    for (const path of checks) await expectNoOverflow(page, path)
+    await page.setViewportSize({ width: 768, height: 1024 })
+    for (const path of checks) await expectNoOverflow(page, path)
   })
 })
+
+async function expectNoOverflow(page: import('@playwright/test').Page, path: string) {
+  await page.goto(path)
+  await page.waitForLoadState('networkidle')
+  // Compara com a largura configurada: no mobile, conteúdo largo amplia o viewport de layout.
+  const width = await page.evaluate(() => Math.max(document.documentElement.scrollWidth, window.innerWidth))
+  expect(width, path).toBeLessThanOrEqual(page.viewportSize()!.width)
+}

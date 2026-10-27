@@ -113,7 +113,7 @@ export function PurchasePanel({ nft }: { nft: Nft }) {
       </fieldset>
 
       <div className="fixed inset-x-0 bottom-0 z-30 rounded-t-2xl border-t border-border bg-card p-4 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:static md:pb-0 md:z-auto md:rounded-none md:border-0 md:bg-transparent md:p-0">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
           <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="text-sm md:sr-only">Qtd.</span>
@@ -123,7 +123,7 @@ export function PurchasePanel({ nft }: { nft: Nft }) {
               {formatEth(edition.price)}
             </span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Button className="min-w-0 flex-1 md:w-40 md:flex-none" size="lg" disabled={soldOut || max === 0 || add.isPending} onClick={() => submit(true)}>
               {soldOut ? 'ESGOTADO' : max === 0 ? 'LIMITE ATINGIDO' : add.isPending ? 'ADICIONANDO…' : 'COMPRAR'}
             </Button>

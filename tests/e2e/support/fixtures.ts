@@ -103,6 +103,7 @@ export class App {
 
 export const test = base.extend<Fixtures>({
   scenario: ['success', { option: true }],
+  // oxlint-disable-next-line no-empty-pattern -- o Playwright exige o padrão de objeto nas fixtures
   isMobile: async ({}, use, testInfo) => use(testInfo.project.name === 'mobile'),
   // Automática: todo teste começa no app com o cenário aplicado (estado isolado).
   app: [

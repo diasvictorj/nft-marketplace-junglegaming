@@ -25,7 +25,7 @@ export function SessionWatcher() {
       if (handling) return
       handling = true
       const { href, pathname } = router.state.location
-      dropSession(queryClient)
+      dropSession(queryClient, { keepDrafts: true })
       toast.error(code === 'SESSION_EXPIRED' ? 'Sua sessão expirou.' : 'Sua sessão não é mais válida.', {
         id: 'session-expired',
         description: 'Entre novamente para continuar de onde parou.',

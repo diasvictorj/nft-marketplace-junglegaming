@@ -2,6 +2,7 @@ import { queryOptions, type QueryClient } from '@tanstack/react-query'
 import { ApiError, http } from '@/lib/api/client'
 import type { LoginRequest, SessionResponse, SignupRequest } from '@/lib/api/contracts'
 import { privateKeyPrefixes, qk } from '@/lib/api/queryKeys'
+import { clearPrivateStorage } from '@/lib/session/privateStorage'
 import { getToken, setToken } from '@/lib/session/storage'
 
 /** Retorna a sessão atual ou null para visitante (401 não é erro de UI aqui). */
@@ -50,23 +51,24 @@ export function clearPrivateCache(queryClient: QueryClient) {
     void queryClient.cancelQueries({ queryKey })
     queryClient.removeQueries({ queryKey })
   }
-  try {
-    for (const key of Object.keys(sessionStorage)) if (key.startsWith('kurio:private:')) sessionStorage.removeItem(key)
-  } catch {
-    /* noop */
-  }
 }
 
 /** Instala uma nova sessão (login/cadastro): limpa o cache anterior e grava o token. */
 export function establishSession(queryClient: QueryClient, session: SessionResponse) {
   clearPrivateCache(queryClient)
+  // Rascunhos de outro usuário (ex.: troca de conta após expiração) são descartados.
+  clearPrivateStorage(session.user.id)
   setToken(session.token)
   queryClient.setQueryData(qk.session(), session)
 }
 
-/** Encerra a sessão local (logout ou expiração). */
-export function dropSession(queryClient: QueryClient) {
+/**
+ * Encerra a sessão local. No logout tudo é limpo; na expiração (`keepDrafts`) o
+ * rascunho do checkout do usuário é mantido para retomada após novo login.
+ */
+export function dropSession(queryClient: QueryClient, opts: { keepDrafts?: boolean } = {}) {
   setToken(null)
   clearPrivateCache(queryClient)
+  if (!opts.keepDrafts) clearPrivateStorage()
   queryClient.setQueryData(qk.session(), null)
 }

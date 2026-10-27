@@ -5,10 +5,10 @@ const NETWORK_LABEL = { ethereum: 'Ethereum', polygon: 'Polygon', solana: 'Solan
 
 export function NftDetailTabs({ nft }: { nft: Nft }) {
   const trigger =
-    'h-auto flex-none rounded-none border-0 border-b-2 border-transparent bg-transparent px-0 pb-2 text-sm text-text-primary shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-text-accent'
+    'h-auto flex-none rounded-none border-0 whitespace-normal text-left border-b-2 border-transparent bg-transparent px-0 pb-2 text-sm text-text-primary shadow-none data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:font-bold data-[state=active]:text-text-accent'
   return (
     <Tabs defaultValue="details" className="gap-4">
-      <TabsList className="h-auto w-full justify-start gap-6 rounded-none border-b border-primary/60 bg-transparent p-0">
+      <TabsList className="h-auto w-full flex-wrap justify-start gap-x-6 gap-y-2 rounded-none border-b border-primary/60 bg-transparent p-0">
         <TabsTrigger value="details" className={trigger}>
           Detalhes do NFT
         </TabsTrigger>

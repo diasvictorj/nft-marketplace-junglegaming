@@ -44,6 +44,7 @@ export function FavoriteButton({
         type="button"
         onClick={onClick}
         aria-pressed={active}
+        aria-label={label}
         className={cn(
           'inline-flex h-11 items-center justify-center gap-2 rounded-md border border-primary px-4 text-sm font-bold text-text-accent hover:bg-surface-dark',
           className,
@@ -51,7 +52,6 @@ export function FavoriteButton({
       >
         <Heart className={cn('size-4', active && 'fill-current')} aria-hidden />
         {active ? 'Favoritado' : 'Favoritar'}
-        <span className="sr-only"> {title}</span>
       </button>
     )
   }

@@ -35,6 +35,9 @@ export const mockControl = {
   /** Reenvia o último evento do tipo informado (duplicata com o mesmo eventId). */
   replayLast: (type: 'nft.updated' | 'order.updated') => replayEvent((e) => e.type === type),
 
+  /** Reenvia o último `order.updated` a TODAS as conexões, ignorando o roteamento por sessão. */
+  leakLastOrderEvent: () => replayEvent((e) => e.type === 'order.updated', true),
+
   /** Emite um `nft.updated` antigo (versão anterior) com dados divergentes. */
   emitStaleNft: (nftId: string, price: string) => {
     const nft = structuredClone(getDb().nfts.find((n) => n.id === nftId)!)

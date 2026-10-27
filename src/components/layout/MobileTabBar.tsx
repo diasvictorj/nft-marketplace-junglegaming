@@ -14,7 +14,7 @@ export function MobileTabBar() {
       aria-label="Navegação inferior"
       className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-card/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul className="mx-auto grid max-w-md grid-cols-5 items-center px-2 py-1">
+      <ul className="mx-auto grid h-14 max-w-md grid-cols-5 items-center px-2">
         <li className="grid place-items-center">
           <Link to="/" className={item} activeOptions={{ exact: true, includeSearch: false }} activeProps={active} aria-label="Início">
             <Home className="size-5" aria-hidden />

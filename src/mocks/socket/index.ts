@@ -70,12 +70,16 @@ export function emitOrderUpdated(userId: string, order: Order) {
   }
 }
 
-/** Reenvia um evento já emitido (duplicata) — usado para testar deduplicação. */
-export function replayEvent(match: (e: RealtimeEvent) => boolean) {
-  const found = [...eventLog].reverse().find((e) => match(e.envelope))
+/**
+ * Reenvia um evento já emitido (duplicata) — usado para testar deduplicação.
+ * `broadcast` ignora o roteamento por sessão (simula um vazamento) para provar
+ * que o cliente descarta eventos privados de outra sessão.
+ */
+export function replayEvent(match: (e: RealtimeEvent) => boolean, broadcast = false) {
+  const found = eventLog.toReversed().find((e) => match(e.envelope))
   if (!found) return false
   for (const c of connections) {
-    if (found.target !== null && c.sessionId !== found.target) continue
+    if (!broadcast && found.target !== null && c.sessionId !== found.target) continue
     emitTo(c, found.envelope)
   }
   return true
@@ -92,7 +96,7 @@ export function emitRaw(envelope: RealtimeEvent) {
 /** Derruba todas as conexões; novas tentativas são recusadas por `blockMs`. */
 export function dropConnections(blockMs = 0) {
   blockedUntil = Date.now() + blockMs
-  for (const c of [...connections]) c.close()
+  for (const c of Array.from(connections)) c.close()
 }
 
 export function connectionCount() {

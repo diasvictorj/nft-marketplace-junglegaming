@@ -112,19 +112,25 @@ export function PurchasePanel({ nft }: { nft: Nft }) {
         </p>
       </fieldset>
 
-      <div className="fixed inset-x-0 bottom-[60px] z-30 rounded-t-2xl border-t border-border bg-card p-4 md:static md:z-auto md:rounded-none md:border-0 md:bg-transparent md:p-0">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="text-sm md:sr-only">Qtd.</span>
-            <QuantityStepper value={quantity} max={Math.max(1, max)} onChange={setQuantity} disabled={max === 0} />
+      <div className="fixed inset-x-0 bottom-0 z-30 rounded-t-2xl border-t border-border bg-card p-4 pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:static md:pb-0 md:z-auto md:rounded-none md:border-0 md:bg-transparent md:p-0">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm md:sr-only">Qtd.</span>
+              <QuantityStepper value={quantity} max={Math.max(1, max)} onChange={setQuantity} disabled={max === 0} />
+            </div>
+            <span className="text-xl font-bold text-text-accent md:hidden" aria-hidden>
+              {formatEth(edition.price)}
+            </span>
           </div>
-          <div className="flex flex-1 items-center justify-end gap-3">
-            <Button className="flex-1 md:max-w-[160px]" size="lg" disabled={soldOut || max === 0 || add.isPending} onClick={() => submit(true)}>
+          <div className="flex items-center gap-3">
+            <Button className="min-w-0 flex-1 md:w-40 md:flex-none" size="lg" disabled={soldOut || max === 0 || add.isPending} onClick={() => submit(true)}>
               {soldOut ? 'ESGOTADO' : max === 0 ? 'LIMITE ATINGIDO' : add.isPending ? 'ADICIONANDO…' : 'COMPRAR'}
             </Button>
             <Button
               variant="outline"
               size="icon-lg"
+              className="shrink-0"
               aria-label="Adicionar ao carrinho e continuar navegando"
               disabled={soldOut || max === 0 || add.isPending}
               onClick={() => submit(false)}
@@ -132,7 +138,7 @@ export function PurchasePanel({ nft }: { nft: Nft }) {
               <ShoppingCart aria-hidden />
             </Button>
             <FavoriteButton nftId={nft.id} title={nft.title} variant="button" className="hidden md:inline-flex" />
-            <FavoriteButton nftId={nft.id} title={nft.title} className="size-11 border border-primary md:hidden" />
+            <FavoriteButton nftId={nft.id} title={nft.title} className="size-11 shrink-0 border border-primary md:hidden" />
           </div>
         </div>
       </div>

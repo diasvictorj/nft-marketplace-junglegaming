@@ -1,14 +1,16 @@
 import { ZoomIn } from 'lucide-react'
 import { useState } from 'react'
 import { NftImage } from '@/components/common/NftImage'
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import type { NftImage as NftImageData } from '@/lib/api/contracts'
 import { cn } from '@/lib/utils'
 
-/** Galeria: miniaturas (botões com aria-pressed) + imagem principal com ampliação em diálogo. */
+/**
+ * Galeria: miniaturas (botões com aria-pressed) + imagem principal com ampliação em
+ * diálogo. O DialogTrigger permite ao Radix devolver o foco ao botão ao fechar.
+ */
 export function Gallery({ images, title }: { images: NftImageData[]; title: string }) {
   const [index, setIndex] = useState(0)
-  const [zoom, setZoom] = useState(false)
   const current = images[index] ?? images[0]!
   return (
     <div className="flex flex-col-reverse gap-4 md:flex-row">
@@ -29,22 +31,20 @@ export function Gallery({ images, title }: { images: NftImageData[]; title: stri
       </ul>
       <div className="relative flex-1 rounded-lg bg-card p-3">
         <NftImage image={current} sizes="(min-width: 768px) 260px, 90vw" priority className="rounded-xl" />
-        <button
-          type="button"
-          onClick={() => setZoom(true)}
-          className="absolute top-4 right-4 grid size-8 place-items-center rounded-full bg-ink/80 hover:bg-ink"
-          aria-label="Ampliar imagem"
-        >
-          <ZoomIn className="size-4" aria-hidden />
-        </button>
+        <Dialog>
+          <DialogTrigger
+            className="absolute top-4 right-4 grid size-8 place-items-center rounded-full bg-ink/80 hover:bg-ink"
+            aria-label="Ampliar imagem"
+          >
+            <ZoomIn className="size-4" aria-hidden />
+          </DialogTrigger>
+          <DialogContent className="max-w-[min(90vw,720px)] bg-card p-3">
+            <DialogTitle className="sr-only">{title}</DialogTitle>
+            <DialogDescription className="sr-only">{current.alt}</DialogDescription>
+            <NftImage image={current} sizes="720px" className="rounded-lg" />
+          </DialogContent>
+        </Dialog>
       </div>
-      <Dialog open={zoom} onOpenChange={setZoom}>
-        <DialogContent className="max-w-[min(90vw,720px)] bg-card p-3">
-          <DialogTitle className="sr-only">{title}</DialogTitle>
-          <DialogDescription className="sr-only">{current.alt}</DialogDescription>
-          <NftImage image={current} sizes="720px" className="rounded-lg" />
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

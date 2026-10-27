@@ -36,7 +36,7 @@ function NftDetailPage() {
   const { nftId } = Route.useParams()
   const { data: nft } = useSuspenseQuery(nftDetailQueryOptions(nftId))
   return (
-    <div className="mx-auto w-full max-w-[1200px] space-y-16 px-4 pt-2 pb-48 md:pt-6 md:pb-0 xl:px-0">
+    <div className="mx-auto w-full max-w-[1200px] space-y-16 px-4 pt-2 pb-56 md:pt-6 md:pb-0 xl:px-0">
       <div className="space-y-5">
         <Breadcrumbs items={[{ label: 'Início', to: '/' }, { label: 'Mercado' }]} />
         <div className="grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:grid-cols-[440px_1fr] lg:gap-12">

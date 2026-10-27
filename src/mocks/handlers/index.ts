@@ -1,12 +1,19 @@
-import { HttpResponse, http, type RequestHandler } from 'msw'
+import type { RequestHandler } from 'msw'
+import { accountHandlers } from './account'
+import { authHandlers } from './auth'
+import { catalogHandlers } from './catalog'
+import { cartHandlers, favoritesHandlers, orderHandlers } from './commerce'
 
 /**
- * Handlers REST. Cada recurso ganha seu arquivo (session, nfts, favorites, cart,
- * quote, orders, profile, wallets) lendo/escrevendo no mesmo estado em ../db,
- * para manter consistência entre catálogo, carrinho, pedidos etc.
- *
- * TODO: implementar recursos conforme contratos em src/lib/api/contracts.ts.
+ * Handlers REST. Todos leem/escrevem o mesmo estado em ../db, mantendo
+ * catálogo, favoritos, carrinho, pedidos, perfil e carteiras consistentes.
+ * Contratos: src/lib/api/contracts.ts · Tabela de endpoints: ARCHITECTURE.md.
  */
 export const restHandlers: RequestHandler[] = [
-  http.get('/api/health', () => HttpResponse.json({ ok: true })),
+  ...authHandlers,
+  ...catalogHandlers,
+  ...favoritesHandlers,
+  ...cartHandlers,
+  ...orderHandlers,
+  ...accountHandlers,
 ]

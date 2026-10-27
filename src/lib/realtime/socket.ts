@@ -1,15 +1,18 @@
-import { io, type Socket } from 'socket.io-client'
+import type { Socket } from 'socket.io-client'
 import { env } from '@/lib/env'
 
 /**
  * Cliente Socket.IO único. A conexão é aberta/encerrada pelo ciclo de vida
  * da sessão (ver lib/realtime/RealtimeBridge) e nunca compartilhada entre usuários:
  * trocar de sessão encerra o socket anterior e libera seus listeners.
- * Em modo mock, o transporte é interceptado por @mswjs/socket.io-binding.
+ *
+ * `socket.io-client` é importado sob demanda: o engine.io captura `globalThis.WebSocket`
+ * ao ser avaliado, e em modo mock o interceptor do MSW precisa estar instalado antes.
  */
 let socket: Socket | null = null
 
-export function connectSocket(token: string | null): Socket {
+export async function connectSocket(token: string | null): Promise<Socket> {
+  const { io } = await import('socket.io-client')
   disconnectSocket()
   socket = io(env.socketUrl, {
     path: '/socket.io',

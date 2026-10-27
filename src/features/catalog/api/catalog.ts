@@ -14,7 +14,15 @@ export const nftListQueryOptions = (params: NftListParams, userId: string | null
   queryOptions({
     // A lista de favoritos é privada: fica sob a key do usuário.
     queryKey: params.favorites ? ([...qk.user(userId ?? 'anon'), 'favorite-nfts', params] as const) : qk.nfts.list(params),
-    queryFn: async ({ signal }) => (await http.get<Page<Nft>>('/nfts', { params, signal })).data,
+    queryFn: async ({ signal, client }) => {
+      const { data } = await http.get<Page<Nft>>('/nfts', { params, signal })
+      // Um evento recebido durante a requisição não pode ser desfeito pela resposta mais antiga.
+      const items = data.items.map((n) => {
+        const fresher = client.getQueryData<Nft>(qk.nfts.detail(n.id))
+        return fresher && fresher.version > n.version ? fresher : n
+      })
+      return { ...data, items }
+    },
     placeholderData: keepPreviousData,
   })
 

@@ -32,7 +32,7 @@ function RootLayout() {
       </a>
       <Header />
       <MobileTopBar />
-      <main id="main" tabIndex={-1} className="flex-1 outline-none">
+      <main id="main" tabIndex={-1} className="min-h-dvh flex-1 outline-none">
         <Outlet />
       </main>
       <Footer />

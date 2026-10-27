@@ -1,5 +1,6 @@
 import { useQueryClient, type QueryClient } from '@tanstack/react-query'
 import { useEffect, useRef } from 'react'
+import type { Socket } from 'socket.io-client'
 import { toast } from 'sonner'
 import type { Cart, Nft, NftUpdatedEvent, Order, OrderUpdatedEvent, Page } from '@/lib/api/contracts'
 import { qk } from '@/lib/api/queryKeys'
@@ -29,10 +30,14 @@ export function RealtimeBridge() {
   useEffect(() => {
     // Adia a conexão um tick: no double-mount do StrictMode o primeiro efeito é
     // descartado antes de abrir um socket que ficaria órfão no servidor simulado.
-    let socket: ReturnType<typeof connectSocket> | null = null
+    let socket: Socket | null = null
+    let disposed = false
     const timer = setTimeout(() => {
-      socket = connectSocket(token)
-      wire(socket)
+      void connectSocket(token).then((s) => {
+        if (disposed) return s.disconnect()
+        socket = s
+        wire(s)
+      })
     }, 0)
     const seen = new Set<string>()
     const versions = new Map<string, number>()
@@ -49,7 +54,7 @@ export function RealtimeBridge() {
       return true
     }
 
-    const wire = (socket: ReturnType<typeof connectSocket>) => {
+    const wire = (socket: Socket) => {
       socket.on('connect', () => {
         setRealtimeStatus('connected')
         if (connectedOnce) reconcile(queryClient, userId)
@@ -82,6 +87,7 @@ export function RealtimeBridge() {
     }
 
     return () => {
+      disposed = true
       clearTimeout(timer)
       if (socket) disconnectSocket()
       setRealtimeStatus('idle')

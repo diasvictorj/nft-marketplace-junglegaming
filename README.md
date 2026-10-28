@@ -2,7 +2,8 @@
 
 Desafio Frontend em **React + TypeScript**: descoberta, compra e conta do colecionador, com APIs, autenticação, carteiras, pagamentos e tempo real **simulados via MSW** (REST + Socket.IO), seguindo o layout do Figma "GreenMint / Kurio".
 
-- Deploy: _(URL pública da Vercel — ver seção [Deploy](#deploy))_
+- **Deploy:** https://nft-marketplace-junglegaming-theta.vercel.app (build de demonstração, mocks e tempo real ativos)
+- Repositório: https://github.com/diasvictorj/nft-marketplace-junglegaming
 - Arquitetura, contratos e decisões: [`ARCHITECTURE.md`](./ARCHITECTURE.md)
 - Auditoria Lighthouse: [`lighthouse/README.md`](./lighthouse/README.md)
 
@@ -115,6 +116,12 @@ Selecione o cenário por **`?scenario=<id>`** na URL (persistido; trocar de cen�
 ## Deploy
 
 `vercel.json` usa `npm run build:demo` (mocks ligados) e reescreve para `index.html` toda rota sem extensão (acesso direto e refresh funcionam; `mockServiceWorker.js`, assets e `robots.txt` são servidos como arquivos). Netlify/Cloudflare Pages: build `npm run build:demo`, publish `dist`, fallback de SPA para `index.html`.
+
+A versão publicada em https://nft-marketplace-junglegaming-theta.vercel.app é gerada automaticamente a cada push na `main`. A mesma suíte E2E roda contra ela:
+
+```bash
+PW_BASE_URL=https://nft-marketplace-junglegaming-theta.vercel.app npx playwright test
+```
 
 ## Estrutura
 

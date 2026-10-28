@@ -15,24 +15,24 @@ const HERO_IMAGE = {
 export function Hero() {
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden rounded-2xl bg-card md:bg-transparent">
-      <div className="grid items-center gap-6 p-5 md:grid-cols-[1fr_400px] md:p-0 lg:gap-16">
+      <div className="grid grid-cols-[minmax(0,1fr)_6rem] items-start gap-4 p-5 min-[360px]:grid-cols-[minmax(0,1fr)_8rem] sm:grid-cols-[minmax(0,1fr)_9rem] md:grid-cols-[1fr_400px] md:items-center md:gap-6 md:p-0 lg:gap-16">
         <div className="md:pl-4">
           <p className="text-xs md:text-sm">Bem-vindo à Kurio</p>
-          <h1 id="hero-title" className="mt-3 text-xl leading-snug font-bold md:text-display md:leading-[4.375rem]">
+          <h1 id="hero-title" className="mt-2 text-lg leading-snug font-bold md:mt-3 md:text-display md:leading-[4.375rem]">
             SEJA DONO DO FUTURO DA ARTE DIGITAL
           </h1>
-          <p className="mt-4 max-w-md text-xs leading-6 text-text-secondary md:text-sm">
+          <p className="mt-3 max-w-md text-xs leading-5 text-text-secondary md:mt-4 md:text-sm md:leading-6">
             Descubra NFTs selecionados de criadores emergentes e consagrados. Colecione arte digital rara, apoie artistas e
             tenha uma parte da cultura da internet.
           </p>
-          <Button asChild className="mt-6 px-8">
+          <Button asChild className="mt-6 px-5 md:px-8">
             <a href="#catalogo">
               EXPLORAR <ArrowRight aria-hidden />
             </a>
           </Button>
         </div>
-        <div className="hidden overflow-hidden rounded-2xl md:block">
-          <NftImage image={HERO_IMAGE} sizes="400px" priority />
+        <div className="overflow-hidden rounded-xl md:rounded-2xl">
+          <NftImage image={HERO_IMAGE} sizes="(min-width: 768px) 400px, 144px" priority />
         </div>
       </div>
     </section>

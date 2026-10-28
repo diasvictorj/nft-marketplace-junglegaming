@@ -11,7 +11,7 @@ export function AccountLayout({ children }: { children: ReactNode }) {
   const logout = useLogout()
   return (
     <div className="mx-auto grid w-full max-w-[1200px] items-start gap-8 px-4 pt-4 pb-8 md:grid-cols-[240px_1fr] md:pt-8 lg:grid-cols-[310px_1fr] xl:px-0">
-      <nav aria-labelledby="account-nav" className="rounded-lg bg-card py-3">
+      <nav aria-label="Seções da conta" className="rounded-lg bg-card py-3">
         <h2 id="account-nav" className="px-4 pb-2 text-lg font-bold">
           Meu perfil
         </h2>

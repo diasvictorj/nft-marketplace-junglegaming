@@ -62,7 +62,7 @@ export function CartLines({ cart, quote }: { cart: Cart; quote?: Quote }) {
                     </span>
                   )}
                 </p>
-                <div className="flex items-center justify-between gap-2 pr-3 pb-2 md:contents">
+                <div className="flex flex-wrap items-center justify-between gap-2 pr-3 pb-2 md:contents">
                   <QuantityStepper
                     size="sm"
                     label={`Quantidade de ${line.title}`}

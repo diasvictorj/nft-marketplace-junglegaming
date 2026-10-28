@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-27T01:36:05.255Z",
+  "date": "2026-10-28T00:02:26.615Z",
   "env": {
     "node": "v22.16.0",
     "os": "Darwin 25.5.0 (arm64)",
@@ -16,9 +16,9 @@
       "profile": "mobile",
       "scores": {
         "performance": [
-          95,
-          94,
-          94
+          93,
+          93,
+          93
         ],
         "accessibility": [
           100,
@@ -37,16 +37,16 @@
         ]
       },
       "medianScores": {
-        "performance": 94,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "medianMetrics": {
-        "lcpMs": 2826,
+        "lcpMs": 2982,
         "fcpMs": 1921,
         "cls": 0,
-        "tbtMs": 22
+        "tbtMs": 24
       },
       "meetsTargets": true
     },
@@ -82,8 +82,8 @@
         "seo": 100
       },
       "medianMetrics": {
-        "lcpMs": 721,
-        "fcpMs": 505,
+        "lcpMs": 729,
+        "fcpMs": 511,
         "cls": 0.002,
         "tbtMs": 0
       },
@@ -121,10 +121,10 @@
         "seo": 100
       },
       "medianMetrics": {
-        "lcpMs": 2897,
-        "fcpMs": 1917,
+        "lcpMs": 2895,
+        "fcpMs": 1913,
         "cls": 0,
-        "tbtMs": 17
+        "tbtMs": 31
       },
       "meetsTargets": true
     },
@@ -160,8 +160,8 @@
         "seo": 100
       },
       "medianMetrics": {
-        "lcpMs": 766,
-        "fcpMs": 492,
+        "lcpMs": 761,
+        "fcpMs": 490,
         "cls": 0,
         "tbtMs": 0
       },

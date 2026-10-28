@@ -69,6 +69,9 @@ export function AvatarField({ user }: { user: User }) {
           accept={TYPES.join(',')}
           className="sr-only"
           id="avatar-input"
+          // O botão "Alterar" abre o seletor; o input fica fora da ordem de tabulação.
+          tabIndex={-1}
+          aria-label="Arquivo de imagem do avatar"
           aria-describedby={error ? 'avatar-error' : undefined}
           onChange={(e) => {
             void onFile(e.target.files?.[0])

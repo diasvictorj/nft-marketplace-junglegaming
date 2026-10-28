@@ -42,7 +42,7 @@ function CartPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_332px] lg:gap-20">
+          <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_332px] lg:gap-20">
             <div className="space-y-4">
               <PriceChangeNotice cart={cart.data} />
               <CartLines cart={cart.data} quote={quote.data} />
@@ -87,7 +87,7 @@ function CartPage() {
 
 function CartSkeleton() {
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_332px] lg:gap-20" aria-busy="true">
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1fr)_332px] lg:gap-20" aria-busy="true">
       <p className="sr-only" role="status">
         Carregando carrinho…
       </p>

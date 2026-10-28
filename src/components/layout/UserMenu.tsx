@@ -55,8 +55,9 @@ export function UserMenu() {
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="rounded-full focus-visible:outline-2" aria-label={`Menu da conta de ${user.name}`}>
-        <Avatar className="size-9 border border-primary">
+      <DropdownMenuTrigger className="rounded-full focus-visible:outline-2">
+        <span className="sr-only">Menu da conta de {user.name}</span>
+        <Avatar className="size-9 border border-primary" aria-hidden>
           {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt="" />}
           <AvatarFallback className="bg-surface-dark text-xs font-bold text-text-accent">{initials(user.name)}</AvatarFallback>
         </Avatar>

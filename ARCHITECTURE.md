@@ -129,7 +129,8 @@ Definida em `src/app/queryClient.ts` e nas `queryOptions`:
 - Formulários com label associado, `aria-invalid`, mensagens ligadas por `aria-describedby` e o primeiro campo inválido focado.
 - Estados não dependem só de cor: edição esgotada aparece riscada e com texto "(esgotada)"; carteira mostra "Conectada"/"Desconectada" com ícone; favorito usa `aria-pressed`.
 - Skeletons com shimmer que respeitam `prefers-reduced-motion`, com dimensões iguais às do conteúdo (CLS 0).
-- Sem overflow horizontal em 390, 768 e 1440 px (coberto por teste; 1024 e 1280 verificados manualmente).
+- Sem overflow horizontal em 390, 768 e 1440 px, coberto por teste. A rodada de QA também verificou 320 px (reflow equivalente a zoom de 400% em 1280 px) e 1024 px em todas as telas.
+- Auditoria axe-core (WCAG 2.1 A/AA + best practices) sem violações em início, detalhe, 404, login, cadastro, carrinho, pagamento, revisão, confirmação, perfil e carteiras. O input de arquivo do avatar fica fora da ordem de tabulação, porque o botão *Alterar* o aciona, e tem rótulo próprio.
 
 ## Desvios do Figma e decisões de UX
 
@@ -143,7 +144,10 @@ Definida em `src/app/queryClient.ts` e nas `queryOptions`:
 - **Ícones:** usamos lucide, exceto os de redes sociais, exportados do Figma (o lucide v1 não traz marcas).
 - **Imagens:** existem só 4 ilustrações-fonte no arquivo. Os 40 NFTs reutilizam essas obras, convertidas para WebP em 3 tamanhos (`npm run assets`).
 - **Fonte:** Roboto Mono variável, auto-hospedada via `@fontsource-variable`.
-- **Mobile:** sem frames de perfil, carteiras e confirmação; essas telas empilham o layout desktop. A barra de compra do detalhe fica fixa sobre a tab bar. O painel "Mocks" é uma aba vertical na borda esquerda.
+- **Mobile:** não há frames de perfil, carteiras e confirmação, então essas telas empilham o layout desktop. A barra de compra do detalhe fica fixa sobre a tab bar. O painel "Mocks" é uma aba vertical de 15 px na borda esquerda, dentro do gutter de 16 px, sem cobrir conteúdo.
+- **Pagamento mobile:** o frame mobile mostra só a escolha de carteira. Mantivemos no mobile os mesmos campos do frame desktop, com o perfil do colecionador primeiro e depois carteira e rede, porque o enunciado exige validar os campos do layout antes da revisão.
+- **Hero:** os três pontos de carrossel do layout foram omitidos, porque há um único destaque estático e um indicador sem função sugeriria uma interação inexistente. No mobile o título é o mesmo do desktop, não a variação "da cultura digital".
+- **Grade mobile e detalhe mobile:** os cards ficam em grade regular de 2 colunas, sem o deslocamento escalonado do frame. Isso mantém a ordem de leitura e de foco igual à visual. No detalhe mobile, as miniaturas da galeria aparecem abaixo da imagem, e voltar e favoritar ficam no topo e na barra de compra, em vez de sobrepostos à imagem.
 - **Contraste:** a barra laranja do rodapé dos modais e os badges seguem os tokens. O Lighthouse Accessibility mede 100.
 
 ## Limitações conhecidas

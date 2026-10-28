@@ -45,7 +45,7 @@ export function WalletPicker({
   }
 
   return (
-    <fieldset className="space-y-3" aria-describedby={error ? `${groupId}-error` : undefined}>
+    <fieldset className="min-w-0 space-y-3" aria-describedby={error ? `${groupId}-error` : undefined}>
       <legend id={groupId} className="mb-1 w-full text-center font-bold">
         Carteira e rede
       </legend>

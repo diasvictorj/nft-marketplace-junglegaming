@@ -20,16 +20,16 @@ Ambiente: macOS 26 (Darwin 25.5.0, arm64), Apple M2 (8 núcleos), Node 22.16.0, 
 
 | Página | Perfil | Performance | Accessibility | Best Practices | SEO | LCP | CLS | TBT |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Início | mobile | 94 | 100 | 100 | 100 | 2826 ms | 0 | 22 ms |
-| Início | desktop | 100 | 100 | 100 | 100 | 721 ms | 0.002 | 0 ms |
-| Detalhe | mobile | 94 | 100 | 100 | 100 | 2897 ms | 0 | 17 ms |
-| Detalhe | desktop | 100 | 100 | 100 | 100 | 766 ms | 0 | 0 ms |
+| Início | mobile | 93 | 100 | 100 | 100 | 2982 ms | 0 | 24 ms |
+| Início | desktop | 100 | 100 | 100 | 100 | 729 ms | 0.002 | 0 ms |
+| Detalhe | mobile | 94 | 100 | 100 | 100 | 2895 ms | 0 | 31 ms |
+| Detalhe | desktop | 100 | 100 | 100 | 100 | 761 ms | 0 | 0 ms |
 
 Todas as metas foram atingidas (Performance ≥ 90, Accessibility ≥ 95, Best Practices ≥ 95, SEO ≥ 90).
 
 ## Análise
 
-- **Elemento LCP no mobile:** no início, o parágrafo do hero, quase todo em *render delay*; no detalhe, a imagem principal do NFT, quase toda em *resource load delay*, porque ela só é descoberta quando o app renderiza a rota com os dados. Nos dois casos o atraso vem da mesma causa: o app só monta depois que o MSW registra o service worker e instala o interceptor de WebSocket. Esse é o custo intrínseco da simulação no navegador, já que uma API real não tem essa etapa. O bundle de mocks fica em chunks dinâmicos e não entra no caminho crítico com mocks desligados.
+- **Elemento LCP no mobile:** no início, o texto ou a imagem do hero (agora exibida também no mobile, como no Figma), quase todo em *render delay*; no detalhe, a imagem principal do NFT, quase toda em *resource load delay*, porque ela só é descoberta quando o app renderiza a rota com os dados. Nos dois casos o atraso vem da mesma causa: o app só monta depois que o MSW registra o service worker e instala o interceptor de WebSocket. Esse é o custo intrínseco da simulação no navegador, já que uma API real não tem essa etapa. O bundle de mocks fica em chunks dinâmicos e não entra no caminho crítico com mocks desligados.
 - **CLS ≈ 0:**
   - skeletons com as mesmas dimensões do conteúdo;
   - imagens com `width`/`height` e `aspect-ratio`;

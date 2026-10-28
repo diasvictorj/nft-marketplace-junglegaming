@@ -214,14 +214,14 @@ function CheckoutPage() {
         </div>
       )}
 
-      <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_342px] lg:gap-16">
+      <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[minmax(0,1fr)_342px] lg:gap-16">
         {step === 'form' ? (
           <form id="collector-form" noValidate onSubmit={goToReview} className="space-y-5" aria-labelledby="collector-title">
             <h2 id="collector-title" className="font-bold">
               Perfil do colecionador
             </h2>
             <FormAlert>{submitError?.message}</FormAlert>
-            <div className="grid gap-x-5 gap-y-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-x-5 gap-y-4 sm:grid-cols-2">
               <Field label="Nome de exibição" required error={errors.displayName?.message}>
                 {(a) => <Input {...a} autoComplete="name" {...form.register('displayName')} />}
               </Field>

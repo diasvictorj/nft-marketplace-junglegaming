@@ -29,7 +29,7 @@ export function Footer() {
   }
   return (
     <footer className="mx-auto mt-16 w-full max-w-[1200px] px-4 pb-24 md:pb-6 xl:px-0">
-      <div className="grid gap-8 rounded-t-lg bg-card p-6 md:grid-cols-4 md:p-10">
+      <div className="grid grid-cols-1 gap-8 rounded-t-lg bg-card p-6 md:grid-cols-4 md:p-10">
         {features.map((f) => (
           <div key={f.title} className="md:border-r md:border-primary md:pr-6">
             <span aria-hidden className="grid size-14 place-items-center rounded-full bg-primary text-lg font-bold text-ink">
@@ -62,7 +62,7 @@ export function Footer() {
           </p>
         </form>
       </div>
-      <div className="grid gap-2 bg-surface-dark px-6 py-6 text-sm md:grid-cols-4 md:items-center md:px-10">
+      <div className="grid grid-cols-1 gap-2 bg-surface-dark px-6 py-6 text-sm md:grid-cols-4 md:items-center md:px-10">
         <span className="font-bold tracking-[0.2em]">KURIO</span>
         <span>Feito para colecionadores, criadores e cultura</span>
         <a href="mailto:contato@email.com" className="hover:text-text-accent">
@@ -72,7 +72,7 @@ export function Footer() {
           +55 11 4002 8922
         </a>
       </div>
-      <div className="grid gap-8 rounded-b-lg bg-card px-6 py-8 sm:grid-cols-2 md:grid-cols-4 md:px-10">
+      <div className="grid grid-cols-1 gap-8 rounded-b-lg bg-card px-6 py-8 sm:grid-cols-2 md:grid-cols-4 md:px-10">
         <nav aria-labelledby="f-profile">
           <h2 id="f-profile" className="font-bold">
             Meu perfil

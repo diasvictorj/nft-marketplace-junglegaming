@@ -39,10 +39,10 @@ export default function ScenarioPanel() {
         <button
           type="button"
           data-testid="mock-panel"
-          className="fixed top-1/3 left-0 z-50 flex items-center gap-1.5 rounded-r-md border border-l-0 border-border-soft bg-surface-dark px-1.5 py-3 text-[0.625rem] font-bold text-text-accent shadow-lg [writing-mode:vertical-rl]"
-          aria-label={`Painel de simulação (cenário ${current})`}
+          className="fixed top-1/3 left-0 z-50 flex items-center gap-1.5 rounded-r-md border border-l-0 border-border-soft bg-surface-dark px-3 py-0.5 text-[0.5625rem] leading-none whitespace-nowrap font-bold text-text-accent shadow-lg [writing-mode:vertical-rl]"
+          aria-label={`Mocks · ${current}: abrir painel de simulação`}
         >
-          <FlaskConical className="size-3.5 rotate-90" aria-hidden />
+          <FlaskConical className="size-2.5 rotate-90" aria-hidden />
           Mocks · {current}
         </button>
       </SheetTrigger>
